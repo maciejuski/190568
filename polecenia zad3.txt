@@ -1,0 +1,32 @@
+10:29:50	create table pracownik (     id_pracownika int auto_increment primary key,                 imie varchar(40) not null,                 nazwisko varchar(60) not null,                 data_urodzenia date not null)	0 row(s) affected	0.922 sec
+insert into pracownik(imie, nazwisko, data_urodzenia) values('Maciej','Tara','2003-05-03'),('Krzysztof','Para','1999-10-22'),('Tomasz','Kowal','2007-02-07')
+insert into pracownik(imie, nazwisko, data_urodzenia) values('Maciej','Tara','2003-05-03'),('Krzysztof','Para','1999-10-22'),('Tomasz','Kowal','2007-02-07')
+Select * from pracownik LIMIT 0, 1000
+CREATE TABLE zadanie (     id_zadania INT AUTO_INCREMENT,     nazwa_zadania VARCHAR(150) NOT NULL,     priorytet ENUM('normalny', 'wysoki', 'niski'),     opis VARCHAR(255) NULL,     pracownik INT,     PRIMARY KEY (id_zadania),     FOREIGN KEY (pracownik) REFERENCES pracownik(id_pracownika) ON DELETE SET NULL )
+ALTER TABLE zadanie ALTER COLUMN priorytet SET DEFAULT 'normalny'
+insert into zadanie (nazwa_zadania, priorytet, opis) values ('sprzątanie','niski','Posprzątać biuro')
+ALTER TABLE zadanie ALTER COLUMN priorytet SET DEFAULT 'normalny'
+insert into zadanie (nazwa_zadania, priorytet, opis) values ('sprzątanie','niski','Posprzątać biuro')
+delete from zadanie where id_zadania=1
+create table projekt( id_projektu int primary key auto_increment, nazwa_projektu varchar(150), data_rozpoczecia date, data_zakonczenia date null )
+ALTER TABLE projekt ADD menadzer_projektu INT
+ALTER TABLE projekt ADD FOREIGN KEY (menadzer_projektu) REFERENCES pracownik(id_pracownika)
+insert into projekt(nazwa_projektu, data_rozpoczecia, data_zakonczenia, menadzer_projektu) values ('budowa drogi','2025-12-22','2026-07-21','1'),('Wykopanie rowu','2026-11-09',null,'2'),('postawienie znaków','2023-09-30','2023-11-5','3')
+alter table zadanie add foreign key (projekt) references projekt(id_projektu)
+alter table zadanie add column projekt int
+alter table zadanie add foreign key (projekt) references projekt(id_projektu)
+UPDATE zadanie SET projekt = 4 WHERE id_zadania =1
+UPDATE zadanie SET projekt = 5 WHERE id_zadania = 2
+UPDATE zadanie SET projekt = 6 WHERE id_zadania = 3
+CREATE TABLE sprint (     id_sprintu INT AUTO_INCREMENT PRIMARY KEY,     numer_sprintu INT UNSIGNED NOT NULL,     data_rozpoczecia DATE,     data_zakonczenia DATE )
+ALTER TABLE zadanie ADD COLUMN sprint INT NULL REFERENCES sprint(id) ON DELETE SET NULL
+ALTER TABLE zadanie ADD COLUMN sprint INT NULL REFERENCES sprint(id) ON DELETE SET NULL
+INSERT INTO sprint (numer_sprintu, data_rozpoczecia, data_zakonczenia) VALUES (1, '2026-11-09', '2026-11-23')
+select * from sprint LIMIT 0, 1000
+UPDATE zadanie SET sprint = 1 WHERE id_zadania IN (1, 2)
+CREATE TABLE status (     id_statusu INT AUTO_INCREMENT PRIMARY KEY,     nazwa_statusu VARCHAR(20) )
+INSERT INTO status (nazwa_statusu) VALUES ('Nowe'), ('W trakcie'), ('Zakończone')
+CREATE TABLE zadanie_has_status (     id_zdarzenia INT AUTO_INCREMENT PRIMARY KEY,     id_zadania INT,     id_statusu INT,     data_zdarzenia DATETIME DEFAULT CURRENT_TIMESTAMP,      FOREIGN KEY (id_zadania) REFERENCES zadanie(id_zadania),     FOREIGN KEY (id_statusu) REFERENCES status(id_statusu) )
+INSERT INTO zadanie_has_status (id_zadania, id_statusu) VALUES (1, 1), (2, 2), (3, 3)
+DELETE FROM projekt WHERE id_projektu = 1
+DROP TABLE sprint
