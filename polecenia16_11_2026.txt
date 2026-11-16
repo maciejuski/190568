@@ -1,0 +1,38 @@
+alter table zadanie drop constraint zadanie_ibfk_1
+alter table zadanie drop constraint zadanie_ibfk_2
+select * from pracownik LIMIT 0, 1000
+alter table zadanie drop column pracownik
+alter table projekt drop constraint projekt_ibfk_1
+alter table projekt drop column menadzer_projektu
+ALTER TABLE pracownik MODIFY id_pracownika INT NOT NULL
+ALTER TABLE pracownik DROP PRIMARY KEY
+ALTER TABLE pracownik ADD PRIMARY KEY (id_pracownika)
+ALTER TABLE pracownik ADD COLUMN pracownik INT NULL
+ALTER TABLE projekt ADD COLUMN pracownik INT NULL
+ALTER TABLE zadanie ADD COLUMN pracownik INT NULL
+ALTER TABLE projekt ADD COLUMN menadzer_projektu INT NULL
+ALTER TABLE projekt ADD CONSTRAINT fk_projekt_menadzer FOREIGN KEY (menadzer_projektu) REFERENCES pracownik(id_pracownika)
+alter table zadanie add column godziny_szacowane int default 8
+select * from zadanie LIMIT 0, 1000
+update zadanie set godziny_szacowane = 12 where id_zadania=1
+update zadanie set godziny_szacowane = 4 where id_zadania=2
+update zadanie set godziny_szacowane = 6 where id_zadania=3
+update zadanie set godziny_szacowane = 6 where id_zadania=3
+update zadanie set godziny_szacowane = 12 where id_zadania=1
+update zadanie set godziny_szacowane = 4 where id_zadania=2
+update zadanie set godziny_szacowane = 6 where id_zadania=3
+alter table zadanie modify godziny_szacowane int default 6
+insert into zadanie (nazwa_zadania, priorytet, opis, projekt, sprint, pracownik) values ('praca','normalny','zadanie','3','3','1')
+alter table projekt add column opis_kratki varchar(50) null
+alter table projekt modify opis_kratki varchar(200) null
+update projekt set opis_kratki = 'MVP' where id_projektu = 1
+update projekt set opis_kratki = 'Wazne' where id_projektu = 2
+update projekt set opis_kratki = 'pilne' where id_projektu = 3
+alter table projekt drop column opis_kratki
+alter table zadanie drop constraint fk_zadanie_pracownik
+alter table projekt drop constraint fk_projekt_menadzer
+SELECT * FROM zadanie  WHERE projekt NOT IN (SELECT id_projektu FROM projekt)    AND projekt IS NOT NULL LIMIT 0, 1000
+ALTER TABLE zadanie ADD CONSTRAINT fk_zadanie_projekt FOREIGN KEY (projekt) REFERENCES projekt(id_projektu) ON DELETE SET NULL
+SELECT id_zadania, nazwa_zadania, projekt  FROM zadanie  WHERE projekt IS NULL LIMIT 0, 1000
+DELETE FROM projekt WHERE id_projektu = 1
+SELECT id_zadania, nazwa_zadania, projekt  FROM zadanie  WHERE projekt IS NULL LIMIT 0, 1000
